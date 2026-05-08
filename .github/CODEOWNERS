@@ -1,0 +1,15 @@
+# CODEOWNERS
+# Formato: <path_pattern>  <@github_user_or_team>
+# Reemplaza con tu usuario o equipo real.
+
+# Dueños globales del repositorio
+*                           @your-github-username
+
+# Scripts SuiteScript
+src/FileCabinet/            @your-github-username
+
+# Objetos SDF (requieren revisión de administrador NetSuite)
+src/Objects/                @your-github-username
+
+# Pipelines de CI/CD — solo el equipo de DevOps puede aprobar cambios
+.github/                    @your-github-username

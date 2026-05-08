@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy>
+    <configuration>
+        <path>~/Configuration/*</path>
+    </configuration>
+    <files>
+        <path>~/FileCabinet/SuiteScripts/basic_sdf_project/*</path>
+    </files>
+    <objects>
+        <path>~/Objects/*</path>
+    </objects>
+    <translationimports>
+        <path>~/Translations/*</path>
+    </translationimports>
+</deploy>

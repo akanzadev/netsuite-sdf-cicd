@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customrecordtype scriptid="customrecord_basic_sdf_log">
+    <accesstype>CUSTRECORDENTRYPERM</accesstype>
+    <allowattachments>T</allowattachments>
+    <allowinlineediting>F</allowinlineediting>
+    <allowmobileaccess>F</allowmobileaccess>
+    <allowquickadd>F</allowquickadd>
+    <customrecordcustomfields>
+        <customrecordcustomfield scriptid="custrecord_log_message">
+            <fieldtype>TEXTAREA</fieldtype>
+            <label>Log Message</label>
+            <ismandatory>T</ismandatory>
+        </customrecordcustomfield>
+        <customrecordcustomfield scriptid="custrecord_log_level">
+            <fieldtype>SELECT</fieldtype>
+            <label>Log Level</label>
+            <ismandatory>T</ismandatory>
+            <selectrecordtype>-100</selectrecordtype>
+        </customrecordcustomfield>
+        <customrecordcustomfield scriptid="custrecord_log_timestamp">
+            <fieldtype>DATETIMETZ</fieldtype>
+            <label>Timestamp</label>
+            <ismandatory>T</ismandatory>
+        </customrecordcustomfield>
+    </customrecordcustomfields>
+    <description>Custom record for SDF basic project logging</description>
+    <enablekeywords>T</enablekeywords>
+    <isinactive>F</isinactive>
+    <isautoname>T</isautoname>
+    <name>Basic SDF Log</name>
+    <recordname>Log Entry</recordname>
+    <showcreationdate>T</showcreationdate>
+    <showid>T</showid>
+    <showlastmodified>T</showlastmodified>
+    <showowner>T</showowner>
+</customrecordtype>

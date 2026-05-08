@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest projecttype="ACCOUNTCUSTOMIZATION">
+    <projectname>basic_sdf_project</projectname>
+    <frameworkversion>1.0</frameworkversion>
+    <allowedids>.*</allowedids>
+</manifest>

@@ -1,0 +1,65 @@
+name: CI — Lint & Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  validate-xml:
+    name: Validate SDF XML Objects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate XML files are well-formed
+        run: |
+          echo "Validating XML files..."
+          find src/Objects -name "*.xml" -print0 | while IFS= read -r -d '' file; do
+            xmllint --noout "$file" && echo "OK: $file" || { echo "FAIL: $file"; exit 1; }
+          done
+          xmllint --noout src/manifest.xml && echo "OK: manifest.xml"
+          xmllint --noout src/deploy.xml   && echo "OK: deploy.xml"
