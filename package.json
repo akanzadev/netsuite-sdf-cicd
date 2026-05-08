@@ -1,6 +1,6 @@
 {
   "name": "basic-sdf-project",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NetSuite SDF project with CI/CD best practices via GitHub Actions",
   "private": true,
   "scripts": {
