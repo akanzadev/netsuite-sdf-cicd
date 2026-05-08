@@ -1,4 +1,4 @@
-# NetSuite SDF Basic Project — CI/CD con GitHub Actions
+# NetSuite SDF Basic Project — CI/CD con GitHub Actions1
 
 Proyecto base de NetSuite SDF que demuestra buenas prácticas de CI/CD usando GitHub Actions: linting, tests, validación de formato de commits y flujo de aprobación en PRs.
 
