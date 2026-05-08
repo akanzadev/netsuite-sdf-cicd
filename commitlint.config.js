@@ -6,16 +6,16 @@ module.exports = {
       2,
       'always',
       [
-        'feat',     // New feature
-        'fix',      // Bug fix
-        'docs',     // Documentation changes only
-        'style',    // Formatting, no logic change
+        'feat', // New feature
+        'fix', // Bug fix
+        'docs', // Documentation changes only
+        'style', // Formatting, no logic change
         'refactor', // Code restructuring without feature/fix
-        'test',     // Adding or updating tests
-        'chore',    // Build process, tooling, dependencies
-        'perf',     // Performance improvement
-        'ci',       // CI/CD configuration changes
-        'revert',   // Reverts a previous commit
+        'test', // Adding or updating tests
+        'chore', // Build process, tooling, dependencies
+        'perf', // Performance improvement
+        'ci', // CI/CD configuration changes
+        'revert', // Reverts a previous commit
       ],
     ],
     'type-case': [2, 'always', 'lower-case'],
