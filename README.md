@@ -132,6 +132,18 @@ feature/xxx  ──PR──►  develop  ──PR──►  main
 5. Requiere **1 aprobación** antes de hacer merge
 6. Para llegar a `main`, abrir PR desde `develop`
 
+### Crear PR con GitHub CLI (correcto)
+
+```bash
+# Login inicial (una sola vez)
+gh auth login
+
+# Crear PR (nota: el comando correcto es "gh pr create")
+gh pr create --base develop --head feat/my-feature \
+      --title "feat(scope): descripcion" \
+      --body "Resumen del cambio, pruebas y riesgos"
+```
+
 ---
 
 ## Branch Protection Rules
