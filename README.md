@@ -1,187 +1,117 @@
-# NetSuite SDF Basic Project — CI/CD con GitHub Actions1
+# NetSuite SDF Skeleton
 
-Proyecto base de NetSuite SDF que demuestra buenas prácticas de CI/CD usando GitHub Actions: linting, tests, validación de formato de commits y flujo de aprobación en PRs.
+Plantilla base para iniciar proyectos NetSuite SDF con una estructura mínima, validaciones de calidad y flujos de CI listos para usar.
 
----
+## Qué incluye
 
-## Estructura del proyecto
+- Estructura inicial SDF en src con ejemplo funcional.
+- Scripts base de SuiteScript en FileCabinet.
+- Ejemplos de SuiteScript por tipo (Client, User Event, Suitelet, RESTlet, Scheduled, Map/Reduce, Workflow Action).
+- Tests unitarios simples en Node.js.
+- Lint con ESLint + Prettier.
+- Workflows de GitHub Actions para lint, tests, validación XML y calidad de PR.
 
-```
-.
-├── src/
-│   ├── manifest.xml                          # Manifiesto SDF
-│   ├── deploy.xml                            # Configuración de deployment
-│   ├── FileCabinet/
-│   │   └── SuiteScripts/
-│   │       └── basic_sdf_project/
-│   │           ├── hello_world.js            # User Event Script de ejemplo
-│   │           └── utils.js                  # Módulo de utilidades (con tests)
-│   └── Objects/
-│       └── customrecord_basic_sdf_log.xml    # Custom Record SDF
-├── tests/
-│   └── utils.test.js                         # Tests unitarios (vanilla Node.js)
-├── .github/
-│   ├── workflows/
-│   │   ├── ci.yml                            # ESLint + Tests + XML validation
-│   │   ├── commitlint.yml                    # Validación de mensajes de commit
-│   │   └── pr-checks.yml                     # Título de PR + descripción
-│   ├── CODEOWNERS                            # Asignación de revisores por área
-│   ├── BRANCH_PROTECTION.md                  # Guía para configurar branch rules
-│   └── ISSUE_TEMPLATE/
-│       └── bug_report.md
-├── .eslintrc.js                              # Reglas ESLint para SuiteScript 2.1
-├── commitlint.config.js                      # Conventional Commits config
-├── package.json
-└── .gitignore
-```
+## Inicio rápido
 
----
+1. Instalar dependencias.
+2. Activar hooks de Git.
+3. Ejecutar validaciones locales.
 
-## Setup inicial
+      npm install
+      npm run prepare
+      npm run lint
+      npm test
 
-```bash
-# 1. Instalar dependencias
-npm install
+## Estructura base
 
-# 2. Activar hooks de Git (Husky)
-npm run prepare
-```
-
----
+      .
+      ├── src/
+      │   ├── manifest.xml
+      │   ├── deploy.xml
+      │   ├── FileCabinet/
+      │   │   └── SuiteScripts/
+      │   │       └── basic_sdf_project/
+      │   │           ├── utils.js
+      │   │           └── examples/
+      │   │               ├── client_script_example.js
+      │   │               ├── user_event_script_example.js
+      │   │               ├── suitelet_example.js
+      │   │               ├── restlet_example.js
+      │   │               ├── scheduled_script_example.js
+      │   │               ├── map_reduce_example.js
+      │   │               └── workflow_action_example.js
+      │   └── Objects/
+      │       └── customrecord_basic_sdf_log.xml
+      ├── tests/
+      │   └── utils.test.js
+      ├── .github/
+      │   ├── workflows/
+      │   ├── BRANCH_PROTECTION.md
+      │   └── COMMIT_PR_GUIDE.md
+      ├── .eslintrc.js
+      ├── commitlint.config.js
+      ├── package.json
+      └── README.md
 
 ## Comandos disponibles
 
-| Comando | Descripción |
-|---|---|
-| `npm test` | Ejecuta tests unitarios |
-| `npm run lint` | Revisa estilo y buenas prácticas con ESLint |
-| `npm run lint:fix` | Corrige automáticamente los problemas corregibles |
+| Comando | Uso |
+| --- | --- |
+| npm run lint | Ejecuta ESLint |
+| npm run lint:fix | Corrige problemas de lint corregibles |
+| npm test | Ejecuta tests unitarios |
 
----
+## CI disponible
 
-## GitHub Actions (Pipelines)
+Los workflows actuales cubren:
 
-### `ci.yml` — Lint & Tests
-Se ejecuta en cada **PR** y **push** a `main`/`develop`.
+- Lint de JavaScript.
+- Tests unitarios.
+- Validación de XML SDF bien formado.
+- Validación de mensajes de commit.
+- Validación de título y descripción de PR.
 
-| Job | Descripción |
-|---|---|
-| `ESLint` | Valida estilo y reglas de SuiteScript |
-| `Unit Tests` | Ejecuta `tests/utils.test.js` |
-| `Validate SDF XML Objects` | Verifica que los XML sean bien formados (`xmllint`) |
+## Personalización del skeleton
 
-### `commitlint.yml` — Commit Messages
-Valida que **todos los commits del PR** sigan [Conventional Commits](https://www.conventionalcommits.org/).
+Checklist sugerido al crear un proyecto nuevo desde esta base:
 
-### `pr-checks.yml` — PR Quality
-- Valida que el **título del PR** siga Conventional Commits.
-- Exige una **descripción mínima** de 20 caracteres.
+1. Cambiar nombre del proyecto en package.json.
+2. Renombrar carpeta src/FileCabinet/SuiteScripts/basic_sdf_project.
+3. Ajustar IDs y nombres de objetos SDF en src/Objects y manifest.xml.
+4. Revisar reglas de protección de ramas según el flujo del equipo.
+5. Ajustar CODEOWNERS y templates de issues/PR.
 
----
+## Documentación de gobierno del repo
 
-## Conventional Commits
+La información de reglas y convenciones se mantiene fuera de este README:
 
-Formato requerido:
+- Branch protection (ES): .github/BRANCH_PROTECTION.es.md
+- Branch protection (EN): .github/BRANCH_PROTECTION.en.md
+- Commit/PR naming guide (ES): .github/COMMIT_PR_GUIDE.es.md
+- Commit/PR naming guide (EN): .github/COMMIT_PR_GUIDE.en.md
 
-```
-<type>(<scope>): <descripción corta>
+## Deploy a NetSuite
 
-[cuerpo opcional]
+Esta base no automatiza el deploy productivo por defecto.
 
-[footer opcional]
-```
+Comandos mínimos con SuiteCloud CLI:
 
-**Tipos permitidos:**
+      npm install -g @oracle/suitecloud-cli
+      suitecloud account:setup
+      suitecloud project:deploy
 
-| Tipo | Uso |
-|---|---|
-| `feat` | Nueva funcionalidad |
-| `fix` | Corrección de bug |
-| `docs` | Solo documentación |
-| `style` | Formato, sin cambio lógico |
-| `refactor` | Reestructura sin feat/fix |
-| `test` | Agregar o modificar tests |
-| `chore` | Dependencias, build, tooling |
-| `perf` | Mejora de rendimiento |
-| `ci` | Cambios en CI/CD |
-| `revert` | Reversar un commit anterior |
+## Ejemplos de tipos de script NetSuite
 
-**Ejemplos válidos:**
-```
-feat(sales-order): add validation for negative amounts
-fix(utils): handle null value in safeParseFloat
-chore: update eslint to v8.57
-ci: add xml validation step to ci workflow
-```
+Carpeta de referencia:
 
----
+      src/FileCabinet/SuiteScripts/basic_sdf_project/examples
 
-## Flujo de trabajo (branching)
+Incluye ejemplos base para:
 
-```
-feature/xxx  ──PR──►  develop  ──PR──►  main
-                         ▲                ▲
-                   1 reviewer       1 reviewer
-                   + CI passing     + CI passing
-```
-
-1. Crear rama desde `develop`: `git checkout -b feat/my-feature`
-2. Hacer commits con formato Conventional Commits
-3. Abrir PR hacia `develop` con título y descripción
-4. Todos los checks de CI deben pasar
-5. Requiere **1 aprobación** antes de hacer merge
-6. Para llegar a `main`, abrir PR desde `develop`
-
-### Crear PR con GitHub CLI (correcto)
-
-```bash
-# Login inicial (una sola vez)
-gh auth login
-
-# Crear PR (nota: el comando correcto es "gh pr create")
-gh pr create --base develop --head feat/my-feature \
-      --title "feat(scope): descripcion" \
-      --body "Resumen del cambio, pruebas y riesgos"
-```
-
----
-
-## Branch Protection Rules
-
-Ver `.github/BRANCH_PROTECTION.md` para instrucciones detalladas de configuración en GitHub.
-
-**Checks requeridos para merge en `main`:**
-- `ESLint`
-- `Unit Tests`
-- `Validate SDF XML Objects`
-- `Validate Commit Messages`
-- `PR Title & Description`
-
----
-
-## ESLint — Reglas destacadas
-
-- `no-var` / `prefer-const` — Solo `let`/`const` (ES2020+)
-- `eqeqeq` — Solo `===`, nunca `==`
-- `no-eval` / `no-implied-eval` — Prohibido en NetSuite
-- `semi`, `quotes: single`, `indent: 2` — Estilo consistente
-- `require-jsdoc` — Documenta funciones declaradas
-
----
-
-## Deployment a NetSuite
-
-Este proyecto usa SDF (SuiteCloud Development Framework). Para deployar:
-
-```bash
-# Instalar SuiteCloud CLI (requiere Java 11+)
-npm install -g @oracle/suitecloud-cli
-
-# Autenticar
-suitecloud account:setup
-
-# Deployar
-suitecloud project:deploy
-```
-
-> El deployment a NetSuite **no está automatizado** en este repo base. Se recomienda agregarlo como un workflow separado con secrets de autenticación.
+- Client Script
+- User Event Script
+- Suitelet
+- RESTlet
+- Scheduled Script
+- Map/Reduce Script
+- Workflow Action Script
