@@ -7,12 +7,20 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
+  extends: [
+    'eslint:recommended',
+    'plugin:prettier/recommended', // debe ir siempre al final
+  ],
+  plugins: ['prettier'],
   globals: {
     // NetSuite AMD globals
     define: 'readonly',
     require: 'readonly',
   },
   rules: {
+    // ----- Prettier -----
+    'prettier/prettier': 'error',
+
     // ----- Possible errors -----
     'no-console': 'warn',
     'no-debugger': 'error',
@@ -44,15 +52,9 @@ module.exports = {
     ],
     'valid-jsdoc': 'off',
 
-    // ----- Style -----
-    semi: ['error', 'always'],
-    quotes: ['error', 'single', { avoidEscape: true }],
-    indent: ['error', 2],
-    'comma-dangle': ['error', 'always-multiline'],
-    'object-curly-spacing': ['error', 'always'],
-    'arrow-parens': ['error', 'always'],
-    'no-trailing-spaces': 'error',
-    'eol-last': ['error', 'always'],
+    // ----- Style (delegado a Prettier, no duplicar aquí) -----
+    // Las reglas de formato como quotes, indent, semi, etc.
+    // son manejadas por Prettier via .prettierrc
   },
   ignorePatterns: ['node_modules/', 'tests/'],
 };
