@@ -58,67 +58,64 @@ Si lint y tests terminan sin errores, el entorno está listo.
 
 ## Flujo de trabajo diario
 
-### 1. Crear una rama de trabajo
+La regla es simple: **1 tarea = 1 rama = los commits que necesites = 1 PR al final.**
+
+No abres un PR por cada commit. Abres el PR cuando la tarea está lista para revisión.
+
+---
+
+### Ejemplo real: crear un script UE para validar proveedores
+
+#### Paso 1 — Crear la rama (una sola vez para esta tarea)
 
 ```bash
-# Desde develop (o main si es tu base)
 git checkout develop
 git pull origin develop
-
-# Crear tu rama con la convención <type>/<tema-kebab-case>
-git checkout -b feat/mi-nueva-funcionalidad
+git checkout -b feat/validar-proveedores-ue
 ```
 
-### 2. Desarrollar y validar en local
+#### Paso 2 — Trabajar y commitear las veces que necesites
+
+No hay límite de commits. Guarda tu avance con frecuencia:
 
 ```bash
-# Corregir problemas de formato automáticamente
-npm run lint:fix
-
-# Verificar que no hay errores de lint
-npm run lint
-
-# Ejecutar tests
-npm test
-```
-
-### 3. Hacer commit
-
-Los mensajes de commit siguen [Conventional Commits](https://www.conventionalcommits.org).
-El hook de Husky valida el formato antes de aceptar el commit.
-
-```bash
+# Primer avance: estructura base del script
 git add .
-git commit -m "feat(scope): descripción corta en minúsculas"
+git commit -m "feat(vendors): add user event script skeleton"
+
+# Segundo avance: lógica de validación
+git add .
+git commit -m "feat(vendors): validate RFC format on vendor beforeSubmit"
+
+# Corrección mientras desarrollas
+git add .
+git commit -m "fix(vendors): handle empty RFC field without throwing"
 ```
 
-Ejemplos válidos:
+Cada vez que necesites puedes también validar localmente:
 
 ```bash
-git commit -m "feat(customers): add RFC validation on save"
-git commit -m "fix(utils): handle null in safeParseFloat"
-git commit -m "docs(readme): update quickstart section"
-git commit -m "chore(deps): upgrade eslint to v9"
+npm run lint:fix   # corrige formato automáticamente
+npm run lint       # verifica que no haya errores
+npm test           # corre los tests
 ```
 
-### 4. Subir la rama y abrir un PR
+#### Paso 3 — Abrir el PR cuando la tarea está lista
+
+Solo cuando terminas la funcionalidad completa, subes la rama y abres **1 PR**:
 
 ```bash
-git push origin feat/mi-nueva-funcionalidad
-```
+git push origin feat/validar-proveedores-ue
 
-Con GitHub CLI (recomendado):
-
-```bash
 gh pr create \
   --base develop \
-  --title "feat(scope): descripción corta" \
-  --body "Qué cambió, cómo se probó y riesgos conocidos."
+  --title "feat(vendors): add vendor RFC validation UE script" \
+  --body "Se agrega script User Event que valida formato de RFC al guardar proveedores. Incluye manejo de campo vacío."
 ```
 
-O abre el PR manualmente en GitHub. El título debe seguir el mismo formato que el commit.
+O abre el PR manualmente en GitHub con el mismo título.
 
-### 5. CI automático
+#### Paso 4 — CI automático
 
 Al abrir el PR se ejecutan automáticamente:
 
@@ -131,6 +128,25 @@ Al abrir el PR se ejecutan automáticamente:
 | PR Title & Description | Título válido y descripción de al menos 20 caracteres |
 
 Todos los checks deben pasar antes de poder hacer merge.
+
+---
+
+### Ejemplo: mejora posterior al mismo script
+
+Misma lógica — nueva tarea, nueva rama:
+
+```bash
+git checkout develop && git pull origin develop
+git checkout -b feat/validar-proveedores-internacional
+
+# ... trabajas, haces los commits que necesites ...
+
+git push origin feat/validar-proveedores-internacional
+gh pr create \
+  --base develop \
+  --title "feat(vendors): support international RFC format" \
+  --body "Extiende la validación para aceptar formatos de RFC de proveedores extranjeros."
+```
 
 ---
 

@@ -57,32 +57,39 @@ refactor/separar-utils-fechas
 
 ---
 
-## 3. Flujo completo copy-paste
+## 3. Cómo funciona el flujo
 
-Reemplaza los valores entre `< >` con los datos de tu tarea.
+**1 tarea = 1 rama = los commits que necesites = 1 PR al final.**
+
+No abres un PR por cada commit. Trabajas en tu rama, haces todos los commits que necesites mientras avanzas, y abres el PR solo cuando la tarea está lista para revisión.
 
 ```bash
-# 1. Crear la rama
+# 1. Crear la rama (una sola vez para esta tarea)
 git checkout develop
 git pull origin develop
 git checkout -b feat/<mi-funcionalidad>
 
-# 2. Trabajar, luego verificar localmente
+# 2. Trabajar y commitear cuantas veces necesites
+git add .
+git commit -m "feat(<scope>): primer avance"
+
+git add .
+git commit -m "feat(<scope>): agrego validación de campo vacío"
+
+git add .
+git commit -m "fix(<scope>): corrijo caso borde encontrado al probar"
+
+# 3. Verificar localmente antes de subir
 npm run lint:fix
 npm run lint
 npm test
 
-# 3. Commitear
-git add .
-git commit -m "feat(<scope>): <descripción corta>"
-
-# 4. Subir la rama
+# 4. Subir la rama y abrir UN solo PR cuando la tarea está lista
 git push origin feat/<mi-funcionalidad>
 
-# 5. Abrir PR (requiere GitHub CLI)
 gh pr create \
   --base develop \
-  --title "feat(<scope>): <descripción corta>" \
+  --title "feat(<scope>): <descripción corta de la tarea completa>" \
   --body "<Qué cambió, cómo se probó y riesgos conocidos.>"
 ```
 

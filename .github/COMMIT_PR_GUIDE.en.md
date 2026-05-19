@@ -57,32 +57,39 @@ refactor/split-date-utils
 
 ---
 
-## 3. Full copy-paste workflow
+## 3. How the workflow works
 
-Replace values inside `< >` with your task details.
+**1 task = 1 branch = as many commits as you need = 1 PR at the end.**
+
+You do not open a PR for every commit. Work on your branch, commit as many times as you need while you progress, and open the PR only when the task is ready for review.
 
 ```bash
-# 1. Create your branch
+# 1. Create your branch (once per task)
 git checkout develop
 git pull origin develop
 git checkout -b feat/<my-feature>
 
-# 2. Work, then validate locally
+# 2. Work and commit as many times as you need
+git add .
+git commit -m "feat(<scope>): add script skeleton"
+
+git add .
+git commit -m "feat(<scope>): add main validation logic"
+
+git add .
+git commit -m "fix(<scope>): handle empty field edge case"
+
+# 3. Validate locally before pushing
 npm run lint:fix
 npm run lint
 npm test
 
-# 3. Commit
-git add .
-git commit -m "feat(<scope>): <short description>"
-
-# 4. Push your branch
+# 4. Push and open ONE PR when the task is complete
 git push origin feat/<my-feature>
 
-# 5. Open a PR (requires GitHub CLI)
 gh pr create \
   --base develop \
-  --title "feat(<scope>): <short description>" \
+  --title "feat(<scope>): <short description of the whole task>" \
   --body "<What changed, how it was tested, and known risks.>"
 ```
 
