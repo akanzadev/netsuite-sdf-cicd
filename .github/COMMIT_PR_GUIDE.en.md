@@ -2,38 +2,44 @@
 
 Quick reference to keep commits and pull requests aligned with project checks.
 
-## 1) Allowed commit and PR title format
+> Commit messages are automatically validated by **commitlint** (local hook via Husky) and by the `commitlint.yml` workflow in CI. PR titles are validated by `pr-checks.yml`.
 
-Use Conventional Commits:
+---
+
+## 1. Commit and PR title format
+
+Use [Conventional Commits](https://www.conventionalcommits.org):
 
 ```text
-type(scope): short description
+type(scope): short description in lowercase
 ```
 
-Allowed types in this repository:
+| Part | Rules |
+| --- | --- |
+| `type` | required, lowercase, one of the values in the table below |
+| `scope` | optional but recommended, lowercase, inside parentheses |
+| `description` | required, no trailing period, 100 characters max total |
 
-- feat
-- fix
-- docs
-- style
-- refactor
-- test
-- chore
-- perf
-- ci
-- revert
+### Allowed types
 
-Notes:
+| Type | When to use it |
+| --- | --- |
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation changes only |
+| `style` | Formatting, no logic change |
+| `refactor` | Code restructuring without feat or fix |
+| `test` | Adding or updating tests |
+| `chore` | Build process, dependencies, tooling |
+| `perf` | Performance improvement |
+| `ci` | CI/CD configuration changes |
+| `revert` | Reverts a previous commit |
 
-- type must be lowercase.
-- scope is optional in PR titles, but recommended.
-- Do not end the subject with a period.
-- Header max length: 100 characters.
-- PR description must be at least 20 characters.
+---
 
-## 2) Recommended branch naming
+## 2. Branch naming
 
-Branch names are not linted by CI, but use this convention:
+Branch names are not validated by CI, but follow this convention:
 
 ```text
 <type>/<kebab-case-short-topic>
@@ -41,45 +47,85 @@ Branch names are not linted by CI, but use this convention:
 
 Examples:
 
-- feat/validate-customer-rfc
-- fix/safeparsefloat-null
-- ci/harden-pr-checks
-- docs/update-branch-protection
-- refactor/split-date-utils
+```text
+feat/validate-customer-rfc
+fix/safeparsefloat-null
+ci/harden-pr-checks
+docs/update-branch-protection
+refactor/split-date-utils
+```
 
-## 3) Ready-to-use examples
+---
 
-### Example A
+## 3. How the workflow works
 
-- Branch: feat/validate-customer-rfc
-- Commit: feat(customers): add RFC format validation on customer save
-- PR title: feat(customers): add RFC format validation on customer save
-- PR body: Adds RFC validation on customer save, including null handling and unit tests.
+**1 task = 1 branch = as many commits as you need = 1 PR at the end.**
 
-### Example B
-
-- Branch: fix/safeparsefloat-null
-- Commit: fix(utils): handle null and undefined in safeParseFloat
-- PR title: fix(utils): handle null and undefined in safeParseFloat
-- PR body: Fixes parsing edge cases and adds regression tests for null and undefined values.
-
-### Example C
-
-- Branch: ci/validate-xml-in-ci
-- Commit: ci(actions): install libxml2-utils before XML validation
-- PR title: ci(actions): install libxml2-utils before XML validation
-- PR body: Stabilizes XML validation by installing xmllint dependency explicitly on the runner.
-
-## 4) CLI templates
+You do not open a PR for every commit. Work on your branch, commit as many times as you need while you progress, and open the PR only when the task is ready for review.
 
 ```bash
-# Commit
-git commit -m "feat(scope): short description"
+# 1. Create your branch (once per task)
+git checkout develop
+git pull origin develop
+git checkout -b feat/<my-feature>
 
-# PR (from your branch to develop)
+# 2. Work and commit as many times as you need
+git add .
+git commit -m "feat(<scope>): add script skeleton"
+
+git add .
+git commit -m "feat(<scope>): add main validation logic"
+
+git add .
+git commit -m "fix(<scope>): handle empty field edge case"
+
+# 3. Validate locally before pushing
+npm run lint:fix
+npm run lint
+npm test
+
+# 4. Push and open ONE PR when the task is complete
+git push origin feat/<my-feature>
+
 gh pr create \
   --base develop \
-  --head feat/your-branch \
-  --title "feat(scope): short description" \
-  --body "What changed, how it was tested, and known risks."
+  --title "feat(<scope>): <short description of the whole task>" \
+  --body "<What changed, how it was tested, and known risks.>"
+```
+
+---
+
+## 4. Ready-to-copy examples
+
+### Example A — new feature
+
+```bash
+git checkout -b feat/validate-customer-rfc
+git commit -m "feat(customers): add RFC format validation on customer save"
+gh pr create \
+  --base develop \
+  --title "feat(customers): add RFC format validation on customer save" \
+  --body "Adds RFC validation on customer save, including null handling and unit tests."
+```
+
+### Example B — bug fix
+
+```bash
+git checkout -b fix/safeparsefloat-null
+git commit -m "fix(utils): handle null and undefined in safeParseFloat"
+gh pr create \
+  --base develop \
+  --title "fix(utils): handle null and undefined in safeParseFloat" \
+  --body "Fixes parsing edge cases and adds regression tests for null and undefined values."
+```
+
+### Example C — CI change
+
+```bash
+git checkout -b ci/validate-xml-in-ci
+git commit -m "ci(actions): install libxml2-utils before XML validation"
+gh pr create \
+  --base develop \
+  --title "ci(actions): install libxml2-utils before XML validation" \
+  --body "Stabilizes XML validation by installing xmllint dependency explicitly on the runner."
 ```
